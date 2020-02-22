@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import * as camera from "nativescript-camera";
 import { alert } from "tns-core-modules/ui/dialogs";
+import { SwipeDirection } from "tns-core-modules/ui/gestures";
 
 @Component({
     selector: "Home",
@@ -11,7 +12,7 @@ import { alert } from "tns-core-modules/ui/dialogs";
 export class HomeComponent {
 
     titleTop: string = 'Color';
-    titleBottom: string = 'Climber';
+    titleBottom: string = 'Climb';
 
     public takePicture() {
         camera.requestCameraPermissions().then(() => {

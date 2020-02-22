@@ -3,14 +3,14 @@ Button {
 }
 
 .cover-image {
-    background-image: url('https://cdn.discordapp.com/attachments/671490777284608039/680574904764334125/Example_Wall_Hard.png');
+    background-image: url('https://cdn.discordapp.com/attachments/502625051112374273/680917749026914305/wall1.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
 }
 
 .title-section {
-    margin-left: 25%;
+    margin-left: 32%;
     margin-top: 20%;
 } 
 
@@ -20,7 +20,7 @@ Button {
 }
 
 .title.top-part{
-    font-size: 50;
+    font-size: 58;
     font-weight: 500;
 }
 
