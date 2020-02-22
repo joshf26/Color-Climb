@@ -10,7 +10,8 @@ import { alert } from "tns-core-modules/ui/dialogs";
 
 export class HomeComponent {
 
-    public img = '~/images/wall1.png';
+    titleTop: string = 'Color';
+    titleBottom: string = 'Climber';
 
     public takePicture() {
         camera.requestCameraPermissions().then(() => {
