@@ -6,6 +6,10 @@ export class Pixel {
         public g: number,
         public b: number,
     ) {}
+
+    public toString(): string {
+        return `Pixel(${this.r}, ${this.g}, ${this.b})`;
+    }
 }
 
 export type Image = Pixel[][];
@@ -17,6 +21,10 @@ export class Hold {
         public radius: number,
         public routeId: number,
     ) {}
+
+    public toString(): string {
+        return `Hold(${this.positionX}, ${this.positionY}, ${this.radius}, ${this.routeId})`;
+    }
 }
 
 @Injectable({
