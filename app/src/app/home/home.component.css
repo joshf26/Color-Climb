@@ -1,3 +1,7 @@
+Button {
+    margin-bottom: 20%;
+}
+
 .cover-image {
     background-image: url('https://cdn.discordapp.com/attachments/671490777284608039/680574904764334125/Example_Wall_Hard.png');
     background-repeat: no-repeat;
@@ -5,3 +9,22 @@
     background-size: cover;
 }
 
+.title-section {
+    margin-left: 25%;
+    margin-top: 20%;
+} 
+
+.title{
+    color: #fff;
+    opacity: .8;
+}
+
+.title.top-part{
+    font-size: 50;
+    font-weight: 500;
+}
+
+.title.bottom-part{
+    font-size: 64;
+    font-weight: 700;
+}
