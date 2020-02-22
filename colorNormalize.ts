@@ -20,9 +20,17 @@ export class Hold {
 
 export function findHolds(image: Pixel[][]): Hold[] {
     const holds: Hold[] = [];
+    // parse through the image
+    const pixelcounter: Pixel[] = [];
+    for(var i = 0; i < image.length; i++) {
+        var pixel = image[i];
 
-    // Code goes here...
-
+        for(var j = 0; j < pixel.length; j++) {
+            console.log("cube[" + i + "][" + j + "] = " + pixel[j].r);
+            pixelcounter.push(pixel[j])
+        }
+    }
+    console.log(pixelcounter)
     return holds;
 }
 interface ImageContext {
