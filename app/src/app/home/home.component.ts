@@ -6,15 +6,18 @@ import {Hold, HoldFinderService, Pixel, Image} from '~/app/holdfinder/holdfinder
 import {isAndroid} from 'tns-core-modules/platform';
 
 @Component({
-    selector: 'Home',
-    templateUrl: './home.component.html'
+    selector: "Home",
+    templateUrl: "./home.component.html",
+    styleUrls: ["./home.component.css"]
 })
+
 export class HomeComponent {
+    titleTop: string = 'Color';
+    titleBottom: string = 'Climb';
 
     constructor(
         private holdFinderService: HoldFinderService,
-    ) {
-    }
+    ) {}
 
     processImageAndroid(imageAsset: ImageAsset): Image {
         // Type checking is ignored since `android` is built-in.

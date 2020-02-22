@@ -1,0 +1,30 @@
+Button {
+    margin-bottom: 20%;
+}
+
+.cover-image {
+    background-image: url('https://cdn.discordapp.com/attachments/502625051112374273/680917749026914305/wall1.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.title-section {
+    margin-left: 32%;
+    margin-top: 20%;
+} 
+
+.title{
+    color: #fff;
+    opacity: .8;
+}
+
+.title.top-part{
+    font-size: 58;
+    font-weight: 500;
+}
+
+.title.bottom-part{
+    font-size: 64;
+    font-weight: 700;
+}
