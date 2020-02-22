@@ -4,6 +4,8 @@ import {NativeScriptModule} from 'nativescript-angular/nativescript.module';
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {HomeComponent} from './home/home.component';
+import {LoadingComponent} from "~/app/loading/loading.component";
+import {ResultsComponent} from "~/app/results/results.component";
 
 @NgModule({
     bootstrap: [
@@ -16,6 +18,8 @@ import {HomeComponent} from './home/home.component';
     declarations: [
         AppComponent,
         HomeComponent,
+        LoadingComponent,
+        ResultsComponent,
     ],
     providers: [],
     schemas: [

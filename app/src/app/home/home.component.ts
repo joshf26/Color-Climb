@@ -4,6 +4,7 @@ import {alert} from 'tns-core-modules/ui/dialogs';
 import {ImageAsset} from 'tns-core-modules/image-asset/image-asset'
 import {Hold, HoldFinderService, Pixel, Image} from '~/app/holdfinder/holdfinder.service';
 import {isAndroid} from 'tns-core-modules/platform';
+import {Router} from "@angular/router";
 
 declare var android: any;
 declare var PHImageManager: any;
@@ -22,7 +23,7 @@ const SCALE_DOWN_FACTOR = 50;
 @Component({
     selector: "Home",
     templateUrl: "./home.component.html",
-    styleUrls: ["./home.component.css"]
+    styleUrls: ["./home.component.css"],
 })
 export class HomeComponent {
     titleTop: string = 'Color';
@@ -30,6 +31,7 @@ export class HomeComponent {
 
     constructor(
         private holdFinderService: HoldFinderService,
+        private router: Router,
     ) {
         this.processImageIOS = this.processImageIOS.bind(this);
         this.getUIImagePixel = this.getUIImagePixel.bind(this);
@@ -107,7 +109,7 @@ export class HomeComponent {
     public takePicture() {
         camera.requestCameraPermissions().then(() => {
             camera.takePicture().then(imageAsset => {
-                // TODO: Move to loading page.
+                this.router.navigate(['/loading']);
 
                 // TODO: Do something with this value.
                 this.findHolds(imageAsset).then(holds => {
