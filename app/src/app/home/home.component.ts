@@ -106,7 +106,7 @@ export class HomeComponent {
 
         image = await (isAndroid ? this.processImageAndroid : this.processImageIOS)(imageAsset);
 
-        this.holdFinderService.findHolds(image);
+        this.holdFinderService.findHolds(image, imageAsset);
     }
 
     public takePicture() {
@@ -115,8 +115,7 @@ export class HomeComponent {
                 this.loading = true;
 
                 this.findHolds(imageAsset).then(() => {
-                    setTimeout((() => this.router.navigate(['/results'])).bind(this), 500);
-                    // this.router.navigate(['/results']);
+                    this.router.navigate(['/results']);
                 });
             }).catch(error => {
                 alert(error);
