@@ -74,7 +74,7 @@ export class HoldFinderService {
                     flatImage[i][j] = new Pixel(rgbVal[0],rgbVal[1], rgbVal[2]);
                 }
                 // gray
-                else if (hsvVal[1] <= 8 && (hsvVal[2] > 30 && hsvVal[2] <= 70)){
+                else if (hsvVal[1] <= 8 && (hsvVal[2] > 18 && hsvVal[2] <= 70)){
                     var rgbVal = coloration.hsv.rgb(0,0,50);
                     flatImage[i][j] = new Pixel(rgbVal[0],rgbVal[1], rgbVal[2]);
                 }
