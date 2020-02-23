@@ -17,8 +17,6 @@ Button {
 .title{
     color: #FFF;
     opacity: 1;
-    /* text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black; */
-    text-shadow: 2px 2px black;
 }
 
 .title.top-part{
