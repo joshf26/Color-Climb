@@ -8,6 +8,11 @@ export class Pixel {
         public g: number,
         public b: number,
     ) {}
+
+    public stringify(): string {
+        let res = this.r + ',' + this.g + ',' + this.b;
+        return res;
+    }
 }
 
 export class Hold {
@@ -24,40 +29,47 @@ export type Image = Pixel[][];
 export class HoldFinderService {
     constructor() {  }
 
+    public pixelfy(key: string): Pixel {
+        var splitted = key.split(',',3);
+        var r = Number(splitted[0]);
+        var g = Number(splitted[1]);
+        var b = Number(splitted[2]);
+        return new Pixel(r,g,b);
+    }
+
     public findHolds(image: Image): Hold[] {
         const holds: Hold[] = [];
-        // parse through the image
-        // const pixelcounter: Pixel[] = [];
-        // for(var i = 0; i < image.length; i++) {
-        //     var pixel = image[i];
 
-        //     for(var j = 0; j < pixel.length; j++) {
-        //         console.log("cube[" + i + "][" + j + "] = " + pixel[j].r);
-        //         pixelcounter.push(pixel[j])
-        //     }
-        // }
-        // console.log(pixelcounter)
-
-        var dict = new Collections.Dictionary<Pixel, number>();
+        var dict = new Collections.Dictionary<string, number>();
         for(var i = 0; i < image.length; i++) {
             var pixel = image[i];
 
             for(var j = 0; j < pixel.length; j++) {
-                console.log("cube[" + i + "][" + j + "] = " + pixel[j].r);
-                if (dict.containsKey(pixel[j])) {
-                    var inc = dict.getValue(pixel[j])
-                    dict.setValue(pixel[j],inc+1)
+                console.log("[" + i + "][" + j + "] = " + pixel[j].r);
+                if (dict.containsKey(pixel[j].stringify())) {
+                    var inc = dict.getValue(pixel[j].stringify())
+                    dict.setValue(pixel[j].stringify(),inc+1)
                 }
                 else {
-                    dict.setValue(pixel[j],1)
+                    dict.setValue(pixel[j].stringify(),1)
                 }
                 
             }
         }
-        console.log(dict)
+        var max = 0
+        var background = new Pixel(0, 0, 0)
+        dict.forEach((key,count) => {
+            if (count > max){
+                max = count
+                background = this.pixelfy(key)
+            }
+        })
+        console.log(background)
 
         return holds;
     }
+
+
 }
 
 
@@ -66,9 +78,9 @@ export class HoldFinderService {
 function test() {
     const hfs:HoldFinderService = new HoldFinderService();
     const image = [
-        [new Pixel(0, 0, 0), new Pixel(0, 0, 0), new Pixel(0, 0, 0)],
-        [new Pixel(0, 0, 0), new Pixel(255, 0, 0), new Pixel(0, 0, 0)],
-        [new Pixel(0, 0, 0), new Pixel(0, 0, 0), new Pixel(0, 0, 0)],
+        [new Pixel(1,1,1), new Pixel(1,1,1), new Pixel(1,1,1)],
+        [new Pixel(1,1,1), new Pixel(255, 0, 0), new Pixel(1,1,1)],
+        [new Pixel(1,1,1), new Pixel(1,1,1), new Pixel(1,1,1)],
     ]
 
     const holds = hfs.findHolds(image);
