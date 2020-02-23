@@ -5,6 +5,7 @@ import {ImageAsset} from 'tns-core-modules/image-asset/image-asset'
 import {Hold, HoldFinderService, Pixel, Image} from '~/app/holdfinder/holdfinder.service';
 import {isAndroid} from 'tns-core-modules/platform';
 import {Router} from "@angular/router";
+import { ActivityIndicator } from "tns-core-modules/ui/activity-indicator";
 
 declare var android: any;
 declare var PHImageManager: any;
@@ -21,13 +22,14 @@ type UIImage = any;
 const SCALE_DOWN_FACTOR = 50;
 
 @Component({
-    selector: "Home",
-    templateUrl: "./home.component.html",
-    styleUrls: ["./home.component.css"],
+    selector: 'Home',
+    templateUrl: './home.component.html',
+    styleUrls: ['./home.component.css'],
 })
 export class HomeComponent {
     titleTop: string = 'Color';
     titleBottom: string = 'Climb';
+    isVisible: boolean = false;
 
     constructor(
         private holdFinderService: HoldFinderService,
@@ -109,7 +111,8 @@ export class HomeComponent {
     public takePicture() {
         camera.requestCameraPermissions().then(() => {
             camera.takePicture().then(imageAsset => {
-                this.router.navigate(['/loading']);
+                // this.router.navigate(['/loading']);
+                this.isVisible = true;
 
                 // TODO: Do something with this value.
                 this.findHolds(imageAsset).then(holds => {
