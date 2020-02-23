@@ -31,15 +31,15 @@ export class Hold {
     providedIn: 'root',
 })
 export class HoldFinderService {
+    public holds: Hold[];
 
-    constructor() { }
-
-    public findHolds(image: Image): Hold[] {
+    public findHolds(image: Image) {
         const holds: Hold[] = [
             new Hold(1, 2, 3, 4),
+            new Hold(2, 3, 4, 5),
         ];
 
-        return holds;
+        this.holds = holds;
     }
 
 }

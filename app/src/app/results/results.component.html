@@ -1,11 +1,3 @@
-<GridLayout>
-    <Label text="HELP"></Label>
-    <ListView [items]="holds">
-        <ng-template let-item="hold">
-            <StackLayout>
-                <Label [text]="item[0]"></Label>
-            </StackLayout>
-        </ng-template>
-    </ListView>
-</GridLayout>
-
+<StackLayout orientation="vertical">
+    <Label [text]="hold" *ngFor="let hold of holds"></Label>
+</StackLayout>

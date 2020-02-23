@@ -1,17 +1,20 @@
 import {Component} from '@angular/core';
-import {Hold} from "~/app/holdfinder/holdfinder.service";
+import {Hold, HoldFinderService} from "~/app/holdfinder/holdfinder.service";
 
 @Component({
     selector: "Results",
     templateUrl: "./results.component.html",
 })
 export class ResultsComponent {
-    private holds: Hold[] = [];
+    public holds: Hold[] = [];
 
-    public setResults(holds: Hold[]) {
-        console.log('############## Holds set.');
-        this.holds = holds;
-        console.log(`############# ${holds}`);
+    constructor(
+        private holdFinderService: HoldFinderService,
+    ) {
+        console.log('########### Constructing');
+        for (const hold of this.holdFinderService.holds) {
+            console.log('########### Pushing');
+            this.holds.push(hold);
+        }
     }
-
 }

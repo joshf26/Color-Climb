@@ -1,22 +1,21 @@
 <GridLayout class="cover-image">
-
-    <StackLayout *ngIf="!isVisible" orientation="vertical" class="title-section">
-        <Label textWrap="true" text='{{ titleTop }}' class="title top-part"></Label>
-        <Label textWrap="true" text='{{ titleBottom }}' class="title bottom-part"></Label>
+    <StackLayout *ngIf="!loading" orientation="vertical" class="title-section">
+        <Label textWrap="true" text='{{titleTop}}' class="title top-part"></Label>
+        <Label textWrap="true" text='{{titleBottom}}' class="title bottom-part"></Label>
     </StackLayout>
 
-    <FlexboxLayout *ngIf ="!isVisible" flexDirection="row" width="100%" height="100%">
+    <FlexboxLayout *ngIf ="!loading" flexDirection="row" width="100%" height="100%">
         <FlexboxLayout flexDirection="column" alignSelf="flex-end" width="100%">
             <Button alignSelf="center" text="Take Picture" (tap)="takePicture()" width="130" height="70"></Button>
         </FlexboxLayout>
     </FlexboxLayout>
 
-    <StackLayout *ngIf="isVisible" orientation="vertical" class="wait-section">
-        <Label textWrap="true" text='{{ waitTitle }}' class="title top-part"></Label>
-        <Label textWrap="true" text='{{ waitTitleBottom }}' class="title bottom-part"></Label>
+    <StackLayout *ngIf="loading" orientation="vertical" class="wait-section">
+        <Label textWrap="true" text='{{waitTitle}}' class="title top-part"></Label>
+        <Label textWrap="true" text='{{waitTitleBottom}}' class="title bottom-part"></Label>
     </StackLayout>
-    
-    <GridLayout *ngIf="isVisible">
-        <ActivityIndicator [busy]="isVisible" color="white"></ActivityIndicator>
+
+    <GridLayout *ngIf="loading">
+        <ActivityIndicator [busy]="loading" color="white"></ActivityIndicator>
     </GridLayout>
 </GridLayout>
