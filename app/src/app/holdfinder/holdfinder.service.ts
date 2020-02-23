@@ -35,7 +35,9 @@ export class HoldFinderService {
     constructor() { }
 
     public findHolds(image: Image): Hold[] {
-        const holds: Hold[] = [];
+        const holds: Hold[] = [
+            new Hold(1, 2, 3, 4),
+        ];
 
         return holds;
     }
