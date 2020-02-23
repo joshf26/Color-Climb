@@ -1,7 +1,15 @@
-<StackLayout orientation="vertical">
-    <Label [text]="fruit" *ngFor="let fruit of holds"></Label>
-</StackLayout>
+<AbsoluteLayout #layout>
+    <Image [src]="originalImage" top="0" left="0" width="100%" height="100%"></Image>
+    <ContentView style="border-radius: 50%"
+                 [left]="hold.positionX"
+                 [top]="hold.positionY + 100"
+                 [width]="hold.radius"
+                 [height]="hold.radius"
+                 backgroundColor="red"
+                 *ngFor="let hold of holds[routeId]"
+    ></ContentView>
+    <StackLayout orientation="horizontal">
+        <Button [text]="route" (tap)="routeId=route" *ngFor="let route of this.holdsKeys" width="40"></Button>
+    </StackLayout>
+</AbsoluteLayout>
 
-<GridLayout>
-    <Image [src]="originalImage"></Image>
-</GridLayout>

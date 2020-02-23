@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import * as camera from 'nativescript-camera';
 import {alert} from 'tns-core-modules/ui/dialogs';
 import {ImageAsset} from 'tns-core-modules/image-asset/image-asset'
-import {HoldFinderService, Pixel, Image} from '~/app/holdfinder/holdfinder.service';
+import {HoldFinderService, Pixel, Image, ImageInfo} from '~/app/holdfinder/holdfinder.service';
 import {isAndroid} from 'tns-core-modules/platform';
 import {Router} from "@angular/router";
 
@@ -19,6 +19,11 @@ declare var CFDataGetBytePtr: any;
 type UIImage = any;
 
 const SCALE_DOWN_FACTOR = 50;
+
+interface ImageWithInfo {
+    image: Image,
+    info: ImageInfo,
+}
 
 @Component({
     selector: 'Home',
@@ -56,7 +61,7 @@ export class HomeComponent {
         );
     }
 
-    private async processImageAndroid(imageAsset: ImageAsset): Promise<Image> {
+    private async processImageAndroid(imageAsset: ImageAsset): Promise<ImageWithInfo> {
         const bitmap = android.graphics.BitmapFactory.decodeFile(imageAsset.android, null);
         const width = bitmap.getWidth();
         const height = bitmap.getHeight();
@@ -70,11 +75,14 @@ export class HomeComponent {
             image.push(row);
         }
 
-        return image;
+        return {
+            image: image,
+            info: new ImageInfo(width, height),
+        };
     }
 
-    private async processImageIOS(imageAsset: ImageAsset): Promise<Image> {
-        return new Promise<Image>((success, error) => {
+    private async processImageIOS(imageAsset: ImageAsset): Promise<ImageWithInfo> {
+        return new Promise<ImageWithInfo>((success, error) => {
             let manager = PHImageManager.defaultManager();
             let options = new PHImageRequestOptions();
             options.resizeMode = PHImageRequestOptionsResizeMode.Exact;
@@ -95,18 +103,21 @@ export class HomeComponent {
                         image.push(row);
                     }
 
-                    success(image);
+                    success({
+                        image: image,
+                        info: new ImageInfo(result.size.width, result.size.height),
+                    });
                 },
             );
         });
     }
 
     async findHolds(imageAsset: ImageAsset): Promise<void> {
-        let image: Image;
+        let imageWithInfo: ImageWithInfo;
 
-        image = await (isAndroid ? this.processImageAndroid : this.processImageIOS)(imageAsset);
+        imageWithInfo = await (isAndroid ? this.processImageAndroid : this.processImageIOS)(imageAsset);
 
-        this.holdFinderService.findHolds(image, imageAsset);
+        this.holdFinderService.findHolds(imageWithInfo.image, imageAsset, imageWithInfo.info);
     }
 
     public takePicture() {

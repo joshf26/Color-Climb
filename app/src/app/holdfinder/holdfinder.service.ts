@@ -1,5 +1,16 @@
 import {Injectable} from '@angular/core';
-import { ImageAsset } from 'tns-core-modules/image-asset/image-asset';
+import {ImageAsset} from 'tns-core-modules/image-asset/image-asset';
+
+export class ImageInfo {
+    constructor(
+        public width: number,
+        public height: number,
+    ) {}
+
+    public toString(): string {
+        return `ImageInfo(${this.width}, ${this.height})`;
+    }
+}
 
 export class Pixel {
     constructor(
@@ -34,15 +45,17 @@ export class Hold {
 export class HoldFinderService {
     public holds: Hold[] = [];
     public originalImage: ImageAsset;
+    public originalImageInfo: ImageInfo;
 
-    public findHolds(image: Image, originalImage: ImageAsset) {
+    public findHolds(image: Image, originalImage: ImageAsset, originalImageInfo: ImageInfo) {
         const holds: Hold[] = [
             new Hold(1, 2, 3, 4),
             new Hold(2, 3, 4, 5),
         ];
 
-        this.originalImage = originalImage;
         this.holds = holds;
+        this.originalImage = originalImage;
+        this.originalImageInfo = originalImageInfo;
     }
 
 }
