@@ -29,6 +29,8 @@ const SCALE_DOWN_FACTOR = 50;
 export class HomeComponent {
     titleTop: string = 'Color';
     titleBottom: string = 'Climb';
+    waitTitle: string = 'Calculating';
+    waitTitleBottom: string = 'Results'
     isVisible: boolean = false;
 
     constructor(
