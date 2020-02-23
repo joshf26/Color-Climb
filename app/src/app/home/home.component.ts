@@ -2,10 +2,9 @@ import {Component} from '@angular/core';
 import * as camera from 'nativescript-camera';
 import {alert} from 'tns-core-modules/ui/dialogs';
 import {ImageAsset} from 'tns-core-modules/image-asset/image-asset'
-import {Hold, HoldFinderService, Pixel, Image} from '~/app/holdfinder/holdfinder.service';
+import {HoldFinderService, Pixel, Image} from '~/app/holdfinder/holdfinder.service';
 import {isAndroid} from 'tns-core-modules/platform';
 import {Router} from "@angular/router";
-import {ResultsComponent} from "~/app/results/results.component";
 
 declare var android: any;
 declare var PHImageManager: any;
@@ -30,13 +29,13 @@ export class HomeComponent {
     titleTop: string = 'Color';
     titleBottom: string = 'Climb';
     waitTitle: string = 'Calculating';
-    waitTitleBottom: string = 'Results'
+    waitTitleBottom: string = 'Results';
     isVisible: boolean = false;
+    loading: boolean = false;
 
     constructor(
         private holdFinderService: HoldFinderService,
         private router: Router,
-        private resultsComponent: ResultsComponent,
     ) {
         this.processImageIOS = this.processImageIOS.bind(this);
         this.getUIImagePixel = this.getUIImagePixel.bind(this);
@@ -103,23 +102,20 @@ export class HomeComponent {
         });
     }
 
-    async findHolds(imageAsset: ImageAsset): Promise<Hold[]> {
+    async findHolds(imageAsset: ImageAsset): Promise<void> {
         let image: Image;
 
         image = await (isAndroid ? this.processImageAndroid : this.processImageIOS)(imageAsset);
 
-        return this.holdFinderService.findHolds(image);
+        this.holdFinderService.findHolds(image);
     }
 
     public takePicture() {
         camera.requestCameraPermissions().then(() => {
             camera.takePicture().then(imageAsset => {
-                // this.router.navigate(['/loading']);
-                this.isVisible = true;
+                this.loading = true;
 
-                this.findHolds(imageAsset).then(holds => {
-                    this.resultsComponent.setResults(holds);
-
+                this.findHolds(imageAsset).then(() => {
                     setTimeout((() => this.router.navigate(['/results'])).bind(this), 500);
                 });
             }).catch(error => {
