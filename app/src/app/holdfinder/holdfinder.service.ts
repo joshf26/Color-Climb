@@ -31,7 +31,7 @@ export class Hold {
     providedIn: 'root',
 })
 export class HoldFinderService {
-    public holds: Hold[];
+    public holds: Hold[] = [];
 
     public findHolds(image: Image) {
         const holds: Hold[] = [

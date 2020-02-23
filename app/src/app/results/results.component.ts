@@ -11,9 +11,7 @@ export class ResultsComponent {
     constructor(
         private holdFinderService: HoldFinderService,
     ) {
-        console.log('########### Constructing');
         for (const hold of this.holdFinderService.holds) {
-            console.log('########### Pushing');
             this.holds.push(hold);
         }
     }

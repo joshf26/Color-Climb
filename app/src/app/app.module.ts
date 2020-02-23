@@ -21,9 +21,7 @@ import {ResultsComponent} from "~/app/results/results.component";
         HomeComponent,
         ResultsComponent,
     ],
-    providers: [
-        ResultsComponent,
-    ],
+    providers: [],
     schemas: [
         NO_ERRORS_SCHEMA,
     ]

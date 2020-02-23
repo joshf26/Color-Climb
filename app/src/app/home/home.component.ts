@@ -115,7 +115,8 @@ export class HomeComponent {
                 this.loading = true;
 
                 this.findHolds(imageAsset).then(() => {
-                    this.router.navigate(['/results']);
+                    setTimeout((() => this.router.navigate(['/results'])).bind(this), 500);
+                    // this.router.navigate(['/results']);
                 });
             }).catch(error => {
                 alert(error);
