@@ -70,7 +70,12 @@ export class HomeComponent {
         for (let x = 0; x < width; x += SCALE_DOWN_FACTOR) {
             const row: Pixel[] = [];
             for (let y = 0; y < height; y += SCALE_DOWN_FACTOR) {
-                row.push(bitmap.getColor(x, y));
+                let color = bitmap.getPixel(x, y);
+                row.push(new Pixel(
+                    android.graphics.Color.red(color),
+                    android.graphics.Color.green(color),
+                    android.graphics.Color.blue(color),
+                ));
             }
             image.push(row);
         }
@@ -127,6 +132,7 @@ export class HomeComponent {
 
                 this.findHolds(imageAsset).then(() => {
                     this.router.navigate(['/results']);
+                    this.loading = false;
                 });
             }).catch(error => {
                 alert(error);

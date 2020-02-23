@@ -20,7 +20,9 @@ export class ResultsComponent implements AfterViewInit {
     constructor(
         private holdFinderService: HoldFinderService,
     ) {
+        console.log(`Here and list has len ${this.holdFinderService.holds.length}`);
         for (const hold of this.holdFinderService.holds) {
+            console.log(`##### ${hold}`);
             if (hold.routeId in this.holds) {
                 this.holds[hold.routeId].push(hold);
             } else {
