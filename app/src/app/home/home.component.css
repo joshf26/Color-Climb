@@ -3,28 +3,34 @@ Button {
 }
 
 .cover-image {
-    background-image: url('https://cdn.discordapp.com/attachments/502625051112374273/680917749026914305/wall1.jpg');
+    background-image: url('https://media.discordapp.net/attachments/502625051112374273/681160782162952202/wall_RopeVer.png?width=729&height=1337');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
 }
 
 .title-section {
-    margin-left: 32%;
+    margin-left: 27%;
     margin-top: 20%;
 } 
 
 .title{
-    color: #fff;
-    opacity: .8;
+    color: #FFF;
+    opacity: 1;
 }
 
 .title.top-part{
-    font-size: 58;
-    font-weight: 500;
+    font-size: 72;
+    font-weight: 800;
 }
 
 .title.bottom-part{
-    font-size: 64;
-    font-weight: 700;
+    font-size: 72;
+    font-weight: 800;
+}
+
+.wait-section {
+    margin-left: 2%;
+    margin-top: 20%;
+    text-align: center;
 }

@@ -5,7 +5,7 @@ import {ImageAsset} from 'tns-core-modules/image-asset/image-asset'
 import {Hold, HoldFinderService, Pixel, Image} from '~/app/holdfinder/holdfinder.service';
 import {isAndroid} from 'tns-core-modules/platform';
 import {Router} from "@angular/router";
-import {ResultsComponent} from "~/app/results/results.component";
+import {ResultsComponent} from "~/app/results/results.component"
 
 declare var android: any;
 declare var PHImageManager: any;
@@ -29,6 +29,9 @@ const SCALE_DOWN_FACTOR = 50;
 export class HomeComponent {
     titleTop: string = 'Color';
     titleBottom: string = 'Climb';
+    waitTitle: string = 'Calculating';
+    waitTitleBottom: string = 'Results'
+    isVisible: boolean = false;
 
     constructor(
         private holdFinderService: HoldFinderService,
@@ -111,7 +114,8 @@ export class HomeComponent {
     public takePicture() {
         camera.requestCameraPermissions().then(() => {
             camera.takePicture().then(imageAsset => {
-                this.router.navigate(['/loading']);
+                // this.router.navigate(['/loading']);
+                this.isVisible = true;
 
                 this.findHolds(imageAsset).then(holds => {
                     this.resultsComponent.setResults(holds);
