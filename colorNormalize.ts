@@ -1,6 +1,7 @@
+// npm install typescript-collections --save
 import Collections = require('typescript-collections');
-// tsc <filename.ts>
-// node <filename.js>
+// npm install coloration@1.0.5
+import coloration = require('coloration');
 
 export class Pixel {
     constructor(
@@ -22,6 +23,11 @@ export class Hold {
         public radius: number,
         public routeId: number,
     ) {}
+
+    public stringify(): string {
+        let res = this.positionX + ',' + this.positionY + ',' + this.radius + ',' + this.routeId;
+        return res;
+    }
 }
 
 export type Image = Pixel[][];
@@ -41,20 +47,29 @@ export class HoldFinderService {
     public findHolds(image: Image): Hold[] {
         const holds: Hold[] = [];
 
+        const flatImage: Image = image;
+
         // parse to get a counter for each unique rgb
-        // TODO: normalize rgb values so that similar colors are grouped together
+        // normalize rgb values so that similar colors are grouped together
         // store the normalized pixel values into a new image array
         var dict = new Collections.Dictionary<string, number>();
-        for(var i = 0; i < image.length; i++) {
+        for (var i = 0; i < image.length; i++) {
             var pixel = image[i];
-            for(var j = 0; j < pixel.length; j++) {
-                // console.log("[" + i + "][" + j + "] = " + pixel[j].r);
-                if (dict.containsKey(pixel[j].stringify())) {
-                    var inc = dict.getValue(pixel[j].stringify())
-                    dict.setValue(pixel[j].stringify(),inc+1)
+            for (var j = 0; j < pixel.length; j++) {
+                var hsvVal = coloration.rgb.hsv(pixel[j].r,pixel[j].g,pixel[j].b);
+                // bounds for grouping hues of certain saturation & value together
+                if (hsvVal[1] > 18 && hsvVal[2] > 18){
+                    // the first hue is grouped in a range
+                    var rgbVal = coloration.hsv.rgb(this.group(hsvVal[0]),100,100);
+                    flatImage[i][j] = new Pixel(rgbVal[0],rgbVal[1], rgbVal[2]);
+                }
+                // increment if in dict, otherwise add
+                if (dict.containsKey(flatImage[i][j].stringify())) {
+                    var inc = dict.getValue(flatImage[i][j].stringify());
+                    dict.setValue(flatImage[i][j].stringify(),inc+1);
                 }
                 else {
-                    dict.setValue(pixel[j].stringify(),1)
+                    dict.setValue(flatImage[i][j].stringify(),1);
                 }
                 
             }
@@ -64,23 +79,33 @@ export class HoldFinderService {
         var background = new Pixel(0, 0, 0)
         dict.forEach((key,count) => {
             if (count > max){
-                max = count
-                background = this.pixelfy(key)
+                max = count;
+                background = this.pixelfy(key);
             }
         })
         
-        // TODO: make some sort of container to match normalized colors with assigned routeIDS
-        // this may need another parsing loop
-        var routeId = 0
+        // container to match normalized colors with assigned routeIDS
+        var routes = new Collections.Dictionary<string, number>();
+        // unused...keep track of positions and routes for finding radius
+        var blobs = new Collections.Dictionary<number, string>();
+        var routeId = 0;
         // loop through image again, this time ignoring common bg
-        for(var i = 0; i < image.length; i++) {
-            var pixel = image[i];
+        for(var i = 0; i < flatImage.length; i++) {
+            var pixel = flatImage[i];
             for(var j = 0; j < pixel.length; j++) {
                 if (pixel[j].stringify() != background.stringify()){
-                    // TODO: calculate radius
-                    var radius = 1
-                    holds.push(new Hold(i,j,radius,routeId))
-                    routeId++;
+                    // radius currently set to 1 pixel
+                    // currently every pixel in a hold is added, maybe use this to write over the image
+                    var radius = 1;
+                    // if the color already has a route assigned
+                    if (routes.containsKey(flatImage[i][j].stringify())) {
+                        holds.push(new Hold(i,j,radius,routes.getValue(flatImage[i][j].stringify())));
+                    }
+                    else {
+                        routes.setValue(flatImage[i][j].stringify(),routeId);
+                        holds.push(new Hold(i,j,radius,routeId));
+                        routeId++;
+                    }
                 }
                 
             }
@@ -89,10 +114,37 @@ export class HoldFinderService {
         return holds;
     }
 
+    // ranges for the Hue values to group together
+    private group(num: number) {
+        // red
+        if ((num > 0 && num <= 15) || (num > 345 && num <= 360)){
+            return 0;
+        }
+        // orange
+        if (num > 15 && num <= 45){
+            return 30;
+        }
+        // yellow
+        if (num > 45 && num <= 75){
+            return 60;
+        }
+        // green
+        if (num > 76 && num <= 165){
+            return 120;
+        }
+        // blue
+        if (num > 165 && num <= 240){
+            return 225;
+        }
+        // purple
+        if (num > 240 && num <= 290){
+            return 270;
+        }
+        // pink
+        return 315;
+    }
 
 }
-
-
 
 
 function test() {
@@ -103,14 +155,33 @@ function test() {
         [new Pixel(1,1,1), new Pixel(1,1,1), new Pixel(1,1,1)],
     ]
 
-    const holds = hfs.findHolds(image);
+    var holds = hfs.findHolds(image);
     console.log(holds)
-    // r,g,b, 
-    if (holds[0] == new Hold(1, 1, 1, 0)) {
+
+    if (holds[0].stringify() == new Hold(1, 1, 1, 0).stringify()) {
         console.log('Good job guys');
     } else {
         console.log('WRONG');
     }
+
+    var img2 = [
+        [new Pixel(133, 30, 28), new Pixel(1,1,1), new Pixel(212, 62, 59)],
+        [new Pixel(1,1,1), new Pixel(194, 31, 31), new Pixel(1,1,1)],
+        [new Pixel(1,1,1), new Pixel(1,1,1), new Pixel(1,1,1)],
+        [new Pixel(1,1,1), new Pixel(31, 194, 31), new Pixel(1,1,1)],
+        [new Pixel(194, 31, 31), new Pixel(1,1,1), new Pixel(133, 30, 28)],
+    ]
+
+    var holds = hfs.findHolds(img2);
+    console.log(holds)
+
+    if (holds[0].stringify() == new Hold(0, 0, 1, 0).stringify()) {
+        console.log('Good job guys');
+    } else {
+        console.log('WRONG');
+    }
+
+    
 }
 
 
