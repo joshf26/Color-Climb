@@ -68,6 +68,21 @@ export class HoldFinderService {
                     var rgbVal = coloration.hsv.rgb(this.group(hsvVal[0]),100,100);
                     flatImage[i][j] = new Pixel(rgbVal[0],rgbVal[1], rgbVal[2]);
                 }
+                // white
+                else if (hsvVal[1] <= 8 && hsvVal[2] > 70){
+                    var rgbVal = coloration.hsv.rgb(0,100,100);
+                    flatImage[i][j] = new Pixel(rgbVal[0],rgbVal[1], rgbVal[2]);
+                }
+                // gray
+                else if (hsvVal[1] <= 8 && (hsvVal[2] > 30 && hsvVal[2] <= 70)){
+                    var rgbVal = coloration.hsv.rgb(0,0,50);
+                    flatImage[i][j] = new Pixel(rgbVal[0],rgbVal[1], rgbVal[2]);
+                }
+                // black
+                else if (hsvVal[2] <= 18){
+                    var rgbVal = coloration.hsv.rgb(0,0,0);
+                    flatImage[i][j] = new Pixel(rgbVal[0],rgbVal[1], rgbVal[2]);
+                }
                 // increment if in dict, otherwise add
                 if (dict.containsKey(flatImage[i][j].stringify())) {
                     var inc = dict.getValue(flatImage[i][j].stringify());
