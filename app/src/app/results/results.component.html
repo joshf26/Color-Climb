@@ -1,0 +1,11 @@
+<GridLayout>
+    <Label text="HELP"></Label>
+    <ListView [items]="holds">
+        <ng-template let-item="hold">
+            <StackLayout>
+                <Label [text]="item[0]"></Label>
+            </StackLayout>
+        </ng-template>
+    </ListView>
+</GridLayout>
+
